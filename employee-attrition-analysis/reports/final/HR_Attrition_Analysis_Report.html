@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>HR Employee Attrition Analysis</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #f4f7fa;
+            color: #243447;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        .report {
+            width: min(1100px, calc(100% - 40px));
+            margin: 30px auto;
+            background: white;
+            padding: 48px;
+            box-sizing: border-box;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .title-section {
+            text-align: center;
+            padding-bottom: 28px;
+            border-bottom: 3px solid #1f4e79;
+        }
+
+        h1 {
+            color: #1f4e79;
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            color: #1f4e79;
+            margin-top: 42px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #d9eaf7;
+        }
+
+        h3 {
+            color: #2e75b6;
+        }
+
+        .subtitle {
+            color: #526777;
+            font-size: 18px;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .metric-card {
+            padding: 20px;
+            background: #eef5fa;
+            border-left: 5px solid #2e75b6;
+            border-radius: 8px;
+        }
+
+        .metric-card .label {
+            color: #526777;
+            font-size: 14px;
+        }
+
+        .metric-card .value {
+            color: #1f4e79;
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 22px 0;
+            font-size: 14px;
+        }
+
+        th {
+            background: #1f4e79;
+            color: white;
+            text-align: left;
+            padding: 11px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #d9e2e8;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f7f9fb;
+        }
+
+        .finding-box {
+            background: #f0f8f4;
+            border-left: 5px solid #3b8c63;
+            padding: 20px 25px;
+            border-radius: 8px;
+        }
+
+        .note {
+            background: #fff8e8;
+            border-left: 5px solid #d29b22;
+            padding: 16px 20px;
+            border-radius: 8px;
+        }
+
+        figure {
+            margin: 35px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+
+        figure img {
+            width: 100%;
+            max-width: 850px;
+            height: auto;
+            border: 1px solid #dde4ea;
+            border-radius: 8px;
+        }
+
+        figcaption {
+            margin-top: 10px;
+            color: #526777;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #d9e2e8;
+            text-align: center;
+            color: #71808c;
+            font-size: 13px;
+        }
+
+        @media max-width: 800px {
+            .report {
+                width: 100%;
+                margin: 0;
+                padding: 25px;
+                border-radius: 0;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .report {
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            h2 {
+                page-break-after: avoid;
+            }
+
+            table, figure {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="report">
+        <section class="title-section">
+            <h1>HR Employee Attrition Analysis</h1>
+
+            <div class="subtitle">
+                Data Cleaning, Exploratory Analysis and Key Findings
+            </div>
+
+            <p>
+                Generated on
+                06 August 2026
+            </p>
+        </section>
+
+        <h2>1. Executive Summary</h2>
+
+        <p>
+            This report examines employee attrition using employee
+            demographics, job conditions, compensation, satisfaction,
+            experience and organisational tenure.
+        </p>
+
+        <section class="metrics">
+            <div class="metric-card">
+                <div class="label">Total Employees</div>
+                <div class="value">
+                    1,470
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="label">Employees Who Left</div>
+                <div class="value">
+                    237
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="label">Employees Who Stayed</div>
+                <div class="value">
+                    1,233
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="label">Attrition Rate</div>
+                <div class="value">
+                    16.12%
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="label">Average Age</div>
+                <div class="value">
+                    36.92
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="label">Average Monthly Income</div>
+                <div class="value">
+                    6,502.93
+                </div>
+            </div>
+        </section>
+
+        <h2>2. Dataset Overview</h2>
+
+        <p>
+            The cleaned dataset contains
+            <strong>1,470 employee records</strong>
+            and
+            <strong>34 variables</strong>.
+            Each row represents one employee.
+        </p>
+
+        <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>category</th>
+      <th>variables</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Target variable</td>
+      <td>attrition, attrition_flag</td>
+      <td>Shows whether an employee left the company. The numerical flag uses 1 for Yes and 0 for No.</td>
+    </tr>
+    <tr>
+      <td>Employee identification</td>
+      <td>employee_number</td>
+      <td>Unique employee identifier. It should not be used as a predictive machine-learning feature.</td>
+    </tr>
+    <tr>
+      <td>Personal characteristics</td>
+      <td>age, gender, marital_status, education, education_field, distance_from_home</td>
+      <td>Basic demographic, education and commuting information.</td>
+    </tr>
+    <tr>
+      <td>Employment information</td>
+      <td>department, job_role, job_level, business_travel, job_involvement, over_time</td>
+      <td>Describes the employee's position and work conditions.</td>
+    </tr>
+    <tr>
+      <td>Salary and compensation</td>
+      <td>monthly_income, daily_rate, hourly_rate, monthly_rate, percent_salary_hike, stock_option_level</td>
+      <td>Contains income, payment-rate and compensation information.</td>
+    </tr>
+    <tr>
+      <td>Satisfaction and workplace</td>
+      <td>environment_satisfaction, job_satisfaction, relationship_satisfaction, work_life_balance</td>
+      <td>Numerical measures related to satisfaction and workplace experience.</td>
+    </tr>
+    <tr>
+      <td>Experience and tenure</td>
+      <td>total_working_years, years_at_company, years_in_current_role, years_since_last_promotion, years_with_curr_manager, num_companies_worked</td>
+      <td>Describes career experience, company tenure, promotion history and manager-related tenure.</td>
+    </tr>
+    <tr>
+      <td>Training and performance</td>
+      <td>training_times_last_year, performance_rating</td>
+      <td>Contains training frequency and employee performance information.</td>
+    </tr>
+  </tbody>
+</table>
+
+        <h2>3. Data Preparation</h2>
+
+        <ul>
+            <li>Standardised column names using snake_case.</li>
+            <li>Checked and removed duplicate records.</li>
+            <li>Removed extra spaces from text values.</li>
+            <li>Removed constant-value columns.</li>
+            <li>Created numerical attrition and overtime flags.</li>
+        </ul>
+
+        <div class="note">
+            <strong>Constant columns removed:</strong>
+            employee_count, over18, standard_hours
+        </div>
+
+        <h2>4. Key Findings</h2>
+
+        <div class="finding-box">
+            <ul>
+                <li>The overall employee attrition rate is 16.12%.</li>
+<li>Sales has the highest department-level attrition rate at 20.63%.</li>
+<li>Sales Representative has the highest job-role attrition rate at 39.76%.</li>
+<li>Employees working overtime have an attrition rate of 30.53%, compared with 10.44% for employees not working overtime.</li>
+<li>The median monthly income is 3,202 for employees who left and 5,204 for employees who stayed.</li>
+<li>Employees who left had spent an average of 5.13 years at the company, compared with 7.37 years for employees who stayed.</li>
+<li>These findings show associations in the dataset and should not be interpreted as proof that one factor directly causes attrition.</li>
+            </ul>
+        </div>
+
+        <h2>5. Attrition by Department</h2>
+
+        <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>department</th>
+      <th>employees</th>
+      <th>employees_left</th>
+      <th>attrition_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sales</td>
+      <td>446</td>
+      <td>92</td>
+      <td>20.63%</td>
+    </tr>
+    <tr>
+      <td>Human Resources</td>
+      <td>63</td>
+      <td>12</td>
+      <td>19.05%</td>
+    </tr>
+    <tr>
+      <td>Research &amp; Development</td>
+      <td>961</td>
+      <td>133</td>
+      <td>13.84%</td>
+    </tr>
+  </tbody>
+</table>
+
+        <h2>6. Attrition by Job Role</h2>
+
+        <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>job_role</th>
+      <th>employees</th>
+      <th>employees_left</th>
+      <th>attrition_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sales Representative</td>
+      <td>83</td>
+      <td>33</td>
+      <td>39.76%</td>
+    </tr>
+    <tr>
+      <td>Laboratory Technician</td>
+      <td>259</td>
+      <td>62</td>
+      <td>23.94%</td>
+    </tr>
+    <tr>
+      <td>Human Resources</td>
+      <td>52</td>
+      <td>12</td>
+      <td>23.08%</td>
+    </tr>
+    <tr>
+      <td>Sales Executive</td>
+      <td>326</td>
+      <td>57</td>
+      <td>17.48%</td>
+    </tr>
+    <tr>
+      <td>Research Scientist</td>
+      <td>292</td>
+      <td>47</td>
+      <td>16.10%</td>
+    </tr>
+    <tr>
+      <td>Manufacturing Director</td>
+      <td>145</td>
+      <td>10</td>
+      <td>6.90%</td>
+    </tr>
+    <tr>
+      <td>Healthcare Representative</td>
+      <td>131</td>
+      <td>9</td>
+      <td>6.87%</td>
+    </tr>
+    <tr>
+      <td>Manager</td>
+      <td>102</td>
+      <td>5</td>
+      <td>4.90%</td>
+    </tr>
+    <tr>
+      <td>Research Director</td>
+      <td>80</td>
+      <td>2</td>
+      <td>2.50%</td>
+    </tr>
+  </tbody>
+</table>
+
+        <h2>7. Visual Analysis</h2>
+
+        
+            <figure>
+                <img
+                    src="../figures/attrition_distribution.png"
+                    alt="Figure 1: Employee Attrition Distribution"
+                >
+                <figcaption>
+                    <strong>Figure 1: Employee Attrition Distribution</strong><br>
+                    Comparison of employees who stayed and employees who left.
+                </figcaption>
+            </figure>
+            
+
+            <figure>
+                <img
+                    src="../figures/attrition_by_department.png"
+                    alt="Figure 2: Attrition Rate by Department"
+                >
+                <figcaption>
+                    <strong>Figure 2: Attrition Rate by Department</strong><br>
+                    Percentage of employees leaving within each department.
+                </figcaption>
+            </figure>
+            
+
+            <figure>
+                <img
+                    src="../figures/attrition_by_job_role.png"
+                    alt="Figure 3: Attrition Rate by Job Role"
+                >
+                <figcaption>
+                    <strong>Figure 3: Attrition Rate by Job Role</strong><br>
+                    Comparison of attrition rates across different job roles.
+                </figcaption>
+            </figure>
+            
+
+            <figure>
+                <img
+                    src="../figures/attrition_by_overtime.png"
+                    alt="Figure 4: Attrition Rate by Overtime"
+                >
+                <figcaption>
+                    <strong>Figure 4: Attrition Rate by Overtime</strong><br>
+                    Comparison between employees who work overtime and those who do not.
+                </figcaption>
+            </figure>
+            
+
+            <figure>
+                <img
+                    src="../figures/income_by_attrition.png"
+                    alt="Figure 5: Monthly Income by Attrition Status"
+                >
+                <figcaption>
+                    <strong>Figure 5: Monthly Income by Attrition Status</strong><br>
+                    Distribution of monthly income for employees who stayed and left.
+                </figcaption>
+            </figure>
+            
+
+        <h2>8. Conclusion</h2>
+
+        <p>
+            The analysis identifies meaningful differences in attrition
+            across departments, job roles, overtime conditions, employee
+            income and organisational tenure. These findings can support
+            further investigation and more targeted retention strategies.
+        </p>
+
+        <h2>9. Limitations</h2>
+
+        <ul>
+            <li>
+                The results show statistical relationships and do not
+                establish direct causation.
+            </li>
+
+            <li>
+                The data does not contain exit-interview comments or
+                qualitative employee feedback.
+            </li>
+
+            <li>
+                Some numerical category definitions are not included
+                in the original CSV.
+            </li>
+
+            <li>
+                The target variable is imbalanced because more employees
+                stayed than left.
+            </li>
+        </ul>
+
+        <footer>
+            HR Employee Attrition Analysis Report
+        </footer>
+    </main>
+</body>
+</html>
