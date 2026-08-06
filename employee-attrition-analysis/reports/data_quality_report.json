@@ -1,0 +1,20 @@
+{
+    "original_rows": 1470,
+    "original_columns": 35,
+    "cleaned_rows": 1470,
+    "cleaned_columns": 34,
+    "missing_values_before": 0,
+    "missing_values_after": 0,
+    "duplicate_rows_found": 0,
+    "duplicate_rows_removed": 0,
+    "constant_columns_removed": [
+        "employee_count",
+        "over18",
+        "standard_hours"
+    ],
+    "missing_values_by_column": {},
+    "attrition_distribution": {
+        "No": 1233,
+        "Yes": 237
+    }
+}
